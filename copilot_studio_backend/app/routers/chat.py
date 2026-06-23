@@ -1,0 +1,18 @@
+# python
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+
+router = APIRouter()
+
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    reply: str
+
+@router.post("/chat", response_model=ChatResponse)
+async def create_chat(req: ChatRequest):
+    # simple echo handler — replace with real logic
+    if not req.message:
+        raise HTTPException(status_code=400, detail="message is required")
+    return ChatResponse(reply=f"Echo: {req.message}")
